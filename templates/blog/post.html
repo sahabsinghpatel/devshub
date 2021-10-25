@@ -1,0 +1,97 @@
+{% extends 'base.html' %} {% block title %}BlogPost{% endblock %} {% block body%} {% load humanize %} {% load extras %}
+
+<section class="page-section" id="page-section">
+    <div class="container d-flex justify-content-center">
+        <div class="post">
+            <h1 class="section-heading">{{post.title}}</h1>
+            <img class="img-fluid" src="{{post.thumbnail.url}}" alt="{{post.title}}" />
+            <div class="text-white">{{post.content|safe}}</div>
+            <a href="/blog/{{post.author}}">More Posts by {{post.author}}</a>
+            <div class="comment mt-4">
+                <div class="post-comment">
+                    {% if user.is_authenticated %}
+                    <h2 class="text-white">Post Your Comment</h2>
+                    <form action="/blog/post-comment" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="post" value="{{post.sno}}">
+                        <input type="hidden" name="parent" value="">
+                        <textarea name="comment" id="comment-box">Write Your Comment Here...</textarea>
+                        <div>
+                            <input class="btn btn-primary mt-3" type="submit" value="Post Your Comment" />
+                        </div>
+                    </form>
+                    {% else %}
+                    <h2 class="text-white">Login To Post A Comment</h2>
+                    {% endif %}
+                </div>
+                <hr />
+                <div class="comments">
+                    {% if comments %}
+                    <h1 class="text-white">Comments ({{comments.count}})</h1>
+                    <div class="d-flex flex-column comment-section">
+                        {% for comment in comments %}
+                        <div class="bg-white px-3 mt-2">
+                            <div class="d-flex flex-row user-info pt-2">
+                                <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40" />
+                                <div class="d-flex flex-column justify-content-start mx-3">
+                                    <span class="d-block font-weight-bold name">{{comment.commenter}}</span>
+                                    <span class="date text-black-50">Posted {{comment.time |naturaltime}}</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <p class="comment-text">{{comment.comment}}</p>
+                            </div>
+                            {% if user.is_authenticated %}
+                                <a class="btn btn-primary my-3" data-bs-toggle="collapse" href="#comment-reply{{comment.sno}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                  Reply
+                                </a>
+                              <div class="collapse my-2" id="comment-reply{{comment.sno}}">
+                                <div class="card card-body">
+                                    <form action="/blog/post-comment" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="post" value="{{post.sno}}">
+                                        <input type="hidden" name="parent" value="{{comment.sno}}">
+                                        <textarea name="comment" id="comment-box">Write Your Comment Here...</textarea>
+                                        <div>
+                                            <input class="btn btn-primary mt-3" type="submit" value="Post Your Comment" />
+                                        </div>
+                                    </form>
+                                </div>
+                              </div>
+                            {% endif %}
+                            {% if replyDict|get_val:comment.sno %}
+                                <a class="btn btn-primary my-3" data-bs-toggle="collapse" href="#reply{{comment.sno}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                  Replies
+                                </a>
+                              <div class="collapse my-2" id="reply{{comment.sno}}">
+                                <div class="card card-body">
+                            {% for reply in replyDict|get_val:comment.sno %}
+                        <div class="bg-white px-3 mt-2">
+                            <div class="d-flex flex-row user-info pt-2">
+                                <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40" />
+                                <div class="d-flex flex-column justify-content-start mx-3">
+                                    <span class="d-block font-weight-bold name">{{comment.commenter}}</span>
+                                    <span class="date text-black-50">Posted {{comment.time|naturaltime}}</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <p class="comment-text">{{comment.comment}}</p>
+                            </div>
+                            </div>
+                            {%endfor%}
+                                </div>
+                              </div>
+                            {%endif%}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <h2 class="text-white">No Comments</h2>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

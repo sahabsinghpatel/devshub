@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Search{% endblock %}
+
+{% block body %}
+
+<section class="page-section" id="page-section">
+  <div class="container">
+    <div class="text-center">
+        {% if posts %}
+        <h2 class="text-white mb-5">You searched for '{{query}}'</h2>
+      <div class="d-flex justify-content-center flex-column">
+        {% for post in posts %}
+        <div class="card mb-3 blog-post-bg">
+            <div class="row g-0">
+            <div class="col-md-5">
+                <img src="{{post.thumbnail.url}}" class="img-fluid rounded-start" alt="..." />
+            </div>
+            <div class="col-md-7">
+                <div class="card-body text-start">
+                    <h5 class="card-title text-white">{{post.title}}</h5>
+                    <p class="card-text text-white">
+                        {{post.desc}}
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted d-flex">Author - <a class="text-decoration-none" href="/blog/{{post.author}}">{{post.author|capfirst}}</a></small>
+                        <small class="text-muted">{{post.time}}</small>
+                    </p>
+                    <a href="/blog/{{post.author}}/{{post.slug}}/">Read This Post</a>
+                </div>
+            </div>
+            </div>
+        </div>
+            <dev class="paginator">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" href="search?query={{query}}&page={% if posts.has_previous %}{{posts.previous_page_number}} {% else %}{{posts.number}}{% endif %}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="search?query={{query}}&page={% if posts.has_previous %}{{posts.previous_page_number}} {% else %}{{posts.number}}{% endif %}">{% if posts.has_previous %}{{posts.previous_page_number}} {% else %} 1 {% endif %}</a></li>
+          <li class="page-item"><a class="page-link" href="search?query={{query}}&page={{posts.number}}">{{posts.number}}</a></li>
+          <li class="page-item"><a class="page-link" href="search?query={{query}}&page={% if posts.has_next %}{{posts.next_page_number}} {% else %}{{posts.number}}{% endif %}">{% if posts.has_next %}{{posts.next_page_number}} {% else %} {{posts.number}} {% endif %}</a></li>
+          <li class="page-item">
+            <a class="page-link" href="search?query={{query}}&page={% if posts.has_next %}{{posts.next_page_number}} {% else %}{{posts.number}}{% endif %}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </dev>
+        {% endfor %}
+      </div>
+        {% else %}
+        <h2 class="text-white">You Searched for '{{query}}'. But we found Nothing.</h2>
+        {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

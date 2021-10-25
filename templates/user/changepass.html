@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {% block title %}Change Password{% endblock %} {% block body %}
+
+<section class="page-section" id="page-section">
+    <div class="container">
+        <div class="loginc">
+            <div class="text-center login">
+                <h2 class="section-heading text-uppercase">Change Password</h2>
+                <form id="contactForm" method="POST" action="/user/changepass/">
+                    {% csrf_token %}
+                    <div class="login-div">
+                        <div class="form-group">
+                            <input class="form-control" id="currentpassword" type="password" placeholder="Current Password *"
+                                data-sb-validations="required" name="passwordnow"/>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="password" type="text" placeholder="Password *"
+                                data-sb-validations="required" name="password" name="password"/>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="password" type="password" placeholder="Conferm Password *"
+                                data-sb-validations="required" name="cpassword"/>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">
+                            Login
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

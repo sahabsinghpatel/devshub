@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}SignUp{% endblock %}
+
+{% block body %}
+
+<section class="page-section" id="page-section">
+    <div class="container">
+        <div class="loginc">
+            <div class="text-center login">
+                <h2 class="section-heading text-uppercase">Edit Profile</h2>
+                <form id="contactForm" method="POST" action="/user/editprofile/">
+                    {% csrf_token %}
+                    <div class="login-div">
+                        <div class="form-group">
+                            <input class="form-control" id="name" name="name" type="text" placeholder="Your Name *"
+                                data-sb-validations="required" value="{{profile.name}}"/>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="username" name="username" type="text" placeholder="Username *"
+                                data-sb-validations="required" value="{{profile.user.username}}" disabled/>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="email" name="email" type="email" placeholder="Email *"
+                                data-sb-validations="required" value="{{profile.user.email}}" disabled/>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Please Tell Something About Yourself..." class="etextarea" name="about" id="about">{{profile.about}}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="etextarea" placeholder="Please Fill Your Contact Details Here..." name="contact" id="contact">{{profile.contact}}</textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between px-5">
+                        <button class="btn btn-secondary btn-xl text-uppercase">
+                            <a class="text-decoration-none text-white" href="/user/">Cancel</a>
+                        </button>
+                        <button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

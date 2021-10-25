@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}User{% endblock title %}
+
+{% block body %}
+
+<section class="page-section" id="page-section">
+    <div class="container">
+        <div class="text-center text-white">
+            
+                            <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    {% if userd.pic %}
+                    <img class="img-fluid author-img my-4" src="{{userd.pic.url}}">
+                    {% else %}
+                    <img class="img-fluid author-img my-4" src="{% static 'img/user.png' %}">
+                    {% endif %}
+                </a>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            {% if userd.pic %}
+                            <img class="img-fluid my-4" src="{{userd.pic.url}}">
+                            {% else %}
+                            <img class="img-fluid my-4" src="{% static 'img/user.png' %}">
+                            {% endif %}
+                            <div class="d-flex m-2 justify-content-center">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <p>{{author.about}}</p>
+            <p>{{author.contact}}</p>
+            {% if posts %}
+            <a href="/blog/{{author.user.username}}/">Posts By {{author.user.username}}</a>
+            {% endif %}
+        </div>
+</section>
+
+{% endblock body %}
